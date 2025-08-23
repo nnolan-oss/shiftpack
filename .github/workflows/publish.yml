@@ -3,32 +3,31 @@ name: Publish Package
 on:
   push:
     branches:
-      - main  # asosiy branch
+      - main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-      # Repo klonlash
       - uses: actions/checkout@v4
 
-      # Node.js o‘rnatish
       - uses: actions/setup-node@v3
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
-      # npm token bilan login
       - run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
-      # Dependencies o‘rnatish
       - run: npm ci
 
-      # Test optional
-      - run: npm test
+      # Git identity sozlash
+      - name: Set Git identity
+        run: |
+          git config --global user.name "nneo"
+          git config --global user.email "javohirtech@gmail.com"
 
-      # Version update
+      # Patch version
       - run: npm version patch
 
       # Publish
