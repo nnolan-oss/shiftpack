@@ -28,7 +28,7 @@ jobs:
           git config --global user.email "javohirtech@gmail.com"
 
       # Patch version
-      - run: npm version patch
+      - run: npm version patch --no-git-tag-version
 
       # Publish
       - run: npm publish
