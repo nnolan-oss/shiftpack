@@ -1,6 +1,6 @@
 {
   "name": "shiftpack",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Free and Open Source package and library version migrator for React (based on jscodeshift).",
   "main": "index.js",
   "type": "module",
