@@ -8,18 +8,17 @@ program
   .name("shiftpack")
   .description("React and ecosystem migration tool powered by jscodeshift")
   .version("0.1.0")
-  .enablePositionalOptions(true);   // ⚡ parent-da yoqish kerak
+  .enablePositionalOptions(true);   
 
 program
   .command("migrate <migration>")
-  .allowUnknownOption(true)         // notanish optionlarni ruxsat ber
-  .passThroughOptions(true)         // jscodeshift flaglarini to‘liq o‘tkaz
+  .allowUnknownOption(true)         
+  .passThroughOptions(true)         
   .option("-p, --path <dir>", "Source directory", "src")
   .action((migration, options, command) => {
-    // commander parent rawArgs orqali qolgan optionlarni olish
     const rawArgs = command.parent.rawArgs;
     const migrateIndex = rawArgs.indexOf("migrate");
-    const extraArgs = rawArgs.slice(migrateIndex + 2); // migration va path’dan keyingi argumentlar
+    const extraArgs = rawArgs.slice(migrateIndex + 2); 
 
     runMigration(migration, options, extraArgs);
   });

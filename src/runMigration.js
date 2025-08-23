@@ -18,7 +18,6 @@ export function runMigration(migration, options, extraArgs = []) {
 
   console.log(`🚀 Running migration: ${migrationPath} on ${options.path}`);
 
-  // Agar user extra flag bermagan bo‘lsa, default extensions ni qo‘shamiz
   const hasExtensions = extraArgs.some(arg => arg.startsWith("--extensions"));
   const hasParser = extraArgs.some(arg => arg.startsWith("--parser"));
 
@@ -27,7 +26,7 @@ export function runMigration(migration, options, extraArgs = []) {
     defaults.push("--extensions=js,jsx,ts,tsx");
   }
   if (!hasParser) {
-    defaults.push("--parser=tsx"); // TypeScript+JSX eng umumiy parser
+    defaults.push("--parser=tsx"); 
   }
 
   const cmd = [
