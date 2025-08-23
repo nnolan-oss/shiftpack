@@ -3,35 +3,32 @@ name: Publish Package
 on:
   push:
     branches:
-      - main   # yoki master, asosiy branch
+      - main  # asosiy branch
 
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Repo klonlash
+      # Repo klonlash
       - uses: actions/checkout@v4
 
-      # 2. Node.js versiyasini o‘rnatish
+      # Node.js o‘rnatish
       - uses: actions/setup-node@v3
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
-      # 3. npm tokenni set qilish
+      # npm token bilan login
       - run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
-      # 4. Dependencies o‘rnatish
+      # Dependencies o‘rnatish
       - run: npm ci
 
-      # 5. Build qilish (agar sizning package TS/ESNext bo‘lsa)
-      - run: npm run build
-
-      # 6. Testlarni ishga tushirish (optional)
+      # Test optional
       - run: npm test
 
-      # 7. Version increment & publish
+      # Publish
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
