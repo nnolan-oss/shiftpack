@@ -18,7 +18,7 @@
     "jscodeshift",
     "shiftpack"
   ],
-  "author": "Your Name",
+  "author": "Javohir Gulomjonov (Neo Nolan)",
   "license": "MIT",
   "dependencies": {
     "jscodeshift": "^0.15.0",
