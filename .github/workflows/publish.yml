@@ -28,7 +28,10 @@ jobs:
       # Test optional
       - run: npm test
 
+      # Version update
+      - run: npm version patch
+
       # Publish
-      - run: npm version patch && npm publish
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
