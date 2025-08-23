@@ -1,36 +1,49 @@
 name: Publish Package
-
 on:
   push:
     branches:
       - main
-
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v3
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
-
       - run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-
       - run: npm ci
-
+      
       # Git identity sozlash
       - name: Set Git identity
         run: |
           git config --global user.name "nneo"
           git config --global user.email "javohirtech@gmail.com"
-
-      # Patch version
-      - run: npm version patch --no-git-tag-version
-
+      
+      # Check if we need to publish
+      - name: Check if version needs publishing
+        id: check_version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          
+          # Check if this version exists on npm
+          if npm view shiftpack@$CURRENT_VERSION version 2>/dev/null; then
+            echo "needs_publish=false" >> $GITHUB_OUTPUT
+            echo "Version $CURRENT_VERSION already exists on npm"
+          else
+            echo "needs_publish=true" >> $GITHUB_OUTPUT
+            echo "Version $CURRENT_VERSION does not exist, will publish"
+          fi
+      
+      # Patch version only if current version already exists
+      - name: Bump version if needed
+        if: steps.check_version.outputs.needs_publish == 'false'
+        run: npm version patch --no-git-tag-version
+      
       # Publish
-      - run: npm publish
+      - name: Publish to npm
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
